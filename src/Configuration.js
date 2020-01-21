@@ -1,4 +1,3 @@
-import Leaflet from 'leaflet'
 import {
     BrownfieldPopup
 } from './Popups'
@@ -20,10 +19,10 @@ const Configuration = {
                  onEachFeature: BrownfieldPopup,
                 maxZoom: 2,
                 style: {
-                    color: "#636363",
+                    color: '#636363',
                     weight: 2,
                     opacity: 1,
-                    fillColor: "#fec44f",
+                    fillColor: '#fec44f',
                     fillOpacity: 0.70
                 }
             },
