@@ -1,6 +1,4 @@
-import {
-    BrownfieldPopup
-} from './Popups'
+import { BrownfieldPopup } from './Popups'
 
 const Configuration = {
     Map: {
@@ -14,9 +12,9 @@ const Configuration = {
     DynamicData: [
         {
             key: 'Brownfield Land Register',
-            url: 'http://scnmapsrv.stockport.gov.uk:8080/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=planning:brownfield_land_register_20191218&outputFormat=application/json&bbox={0},EPSG:4326&srsName=EPSG:4326',
+            url: 'https://spatial.stockport.gov.uk/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=planning:brownfield_land_register_20191218&outputFormat=application/json&bbox={0},EPSG:4326&srsName=EPSG:4326',
             layerOptions: {
-                 onEachFeature: BrownfieldPopup,
+                onEachFeature: BrownfieldPopup,
                 maxZoom: 2,
                 style: {
                     color: '#636363',
@@ -33,7 +31,7 @@ const Configuration = {
     [
         {
             key: 'boundary',
-            url: 'http://scnwebdev1.stockport.gov.uk/mapping/layers/boundary.geojson',
+            url: 'https://spatialgeojson.s3-eu-west-1.amazonaws.com/webmapping/boundary.geojson',
             layerOptions: {
                 interactive: false,
                 maxZoom: 9,

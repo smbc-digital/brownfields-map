@@ -1,13 +1,13 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import Leaflet from 'leaflet'
 import { fetchWithTimeout } from './Helpers'
 import Config from './Configuration.js'
-import { streetLayer } from './Tiles'
 import { AddLayerControlsLayers, AddLayerControlsOverlays } from './Controls'
+import { os_open } from './Tiles'
 
 function App() {
-  const mapRef = useRef()
-  const [ layers, setLayers ] = useState([])
+  const  mapRef = useRef()
+  const [layers, setLayers] = useState([])
   const StaticLayerGroup = {}
   const WMSLayerGroup = {}
   const DynamicLayerGroup = Config.DynamicData.reduce((accumulator, currentValue) => {
@@ -21,21 +21,20 @@ function App() {
       minZoom: 11,
       fullscreenControl: Config.Map.FullscreenControl || false,
       layers: [
-        streetLayer
+        os_open
       ]
     }).setView(Config.Map.StartingLatLng || [53.413519, -2.085143], Config.Map.StartingZoom || 12)
-
+    window.LeafletMap = mapRef.current
     AddStaticLayers()
     AddDynamicLayers()
     AddLayerControls()
-    
   }, [])
 
   const AddLayerControls = () => {
     const controlLayers = AddLayerControlsLayers(Config.Map)
     const overlays = AddLayerControlsOverlays(Config, DynamicLayerGroup, WMSLayerGroup, mapRef.current)
 
-    if(Config.Map.DisplayLayerControls){
+    if (Config.Map.DisplayLayerControls) {
       Leaflet.control
         .layers(controlLayers, overlays)
         .addTo(mapRef.current)
@@ -44,24 +43,24 @@ function App() {
 
   const AddDynamicLayers = async () => {
     await Promise.all(Config.DynamicData.map(async (layer) => {
-      if(layer.url.endsWith('wms?')){
+      if (layer.url.endsWith('wms?')) {
         WMSLayerGroup[layer.key] = layer
       } else {
         const url = layer.url.replace('{0}', mapRef.current.getBounds().toBBoxString())
-        await fetchDynamicData(layer.key,url, layer.layerOptions)
+        await fetchDynamicData(layer.key, url, layer.layerOptions)
       }
     }))
-    
+
     updateLayers()
   }
 
   const AddStaticLayers = async () => {
     await Promise.all(Config.StaticData.map(async (layer) => {
-      await fetchStaticData(layer.key,layer.url, layer.layerOptions)
+      await fetchStaticData(layer.key, layer.url, layer.layerOptions)
     }))
 
     Config.StaticData.map((layer) => {
-      if(mapRef.current.getZoom() > layers[layer.key].options.maxZoom){
+      if (mapRef.current.getZoom() > layers[layer.key].options.maxZoom) {
         StaticLayerGroup[layer.key] = new Leaflet.FeatureGroup()
         StaticLayerGroup[layer.key].addLayer(layers[layer.key]).addTo(mapRef.current)
       }
@@ -71,7 +70,7 @@ function App() {
   const updateLayers = () => {
     Object.keys(DynamicLayerGroup).map((layer) => {
       DynamicLayerGroup[layer].clearLayers()
-      if(layers[layer] !== undefined && layers[layer].displayMarkers){
+      if (layers[layer] !== undefined && layers[layer].displayMarkers) {
         DynamicLayerGroup[layer].addLayer(layers[layer])
       }
     })
@@ -81,7 +80,7 @@ function App() {
     })
 
     Config.StaticData.map((layer) => {
-      if(mapRef.current.getZoom() > layers[layer.key].options.maxZoom){
+      if (layers[layer.key] && mapRef.current.getZoom() > layers[layer.key].options.maxZoom) {
         StaticLayerGroup[layer.key] = new Leaflet.FeatureGroup()
         StaticLayerGroup[layer.key].addLayer(layers[layer.key]).addTo(mapRef.current)
       }
@@ -94,20 +93,33 @@ function App() {
 
   useEffect(() => {
     mapRef.current.addEventListener('moveend', handleMapMove)
-
     return () => {
       mapRef.current.removeEventListener('moveend', handleMapMove)
     }
   }, [handleMapMove])
 
+  const handleOpenPopupEvent = ({ content, latlng }) => {
+    Leaflet.popup()
+      .setLatLng(latlng)
+      .setContent(content)
+      .openOn(mapRef.current)
+  }
+
+  useEffect(() => {
+    mapRef.current.addEventListener('openPopup', handleOpenPopupEvent)
+    return () => {
+      mapRef.current.removeEventListener('openPopup', handleOpenPopupEvent)
+    }
+  }, [])
+
   const fetchDynamicData = async (key, url, layerOptions) => {
-    if(mapRef.current.getZoom() > layerOptions.maxZoom){
+    if (mapRef.current.getZoom() > layerOptions.maxZoom) {
       const response = await fetchWithTimeout(url)
       const body = await response.json()
       const layer = Leaflet.geoJson(body, layerOptions)
       layer.displayMarkers = true
       setLayers([...layers, layers[key] = layer])
-    } 
+    }
     else {
       const layer = {}
       layer.displayMarkers = false
@@ -123,7 +135,7 @@ function App() {
   }
 
   return (
-    <div id="map"/>
+    <div id="map" />
   )
 }
 

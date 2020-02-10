@@ -1,7 +1,7 @@
 {
-  "name": "brownfields-map",
+  "name": "leaflet-streetlights",
   "version": "0.1.0",
-  "description": "Boilerplate for brownfields-map",
+  "description": "Boilerplate for leaflet maps",
   "private": true,
   "main": "index.js",
   "dependencies": {
