@@ -5,7 +5,6 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet-fullscreen/dist/Leaflet.fullscreen.css'
 import 'leaflet-fullscreen/dist/Leaflet.fullscreen.js'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import 'font-awesome/css/font-awesome.min.css'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(<App/>, document.getElementById('root'))

@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 const path = require('path')
 
@@ -20,8 +21,7 @@ let config = {
                 include: [
                     path.resolve(__dirname, 'node_modules/leaflet-fullscreen/dist'),
                     path.resolve(__dirname, 'node_modules/leaflet/dist'),
-                    path.resolve(__dirname, 'node_modules/mapbox-gl/dist'),
-                    path.resolve(__dirname, 'node_modules/font-awesome/css')
+                    path.resolve(__dirname, 'node_modules/mapbox-gl/dist')
                 ]
             },
             {
@@ -36,13 +36,6 @@ let config = {
                     path.resolve(__dirname, 'node_modules/leaflet-fullscreen/dist'),
                     path.resolve(__dirname, 'node_modules/leaflet/dist/images')
                 ]
-            },
-            {
-                test: /\.(woff|woff2|eot|ttf|svg)$/i,
-                use: ['url-loader'],
-                include: [
-                    path.resolve(__dirname, 'node_modules/font-awesome/fonts')
-                ]
             }
         ]
     },
@@ -50,6 +43,7 @@ let config = {
         modules: ['node_modules', path.resolve(__dirname, 'src')]
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new CompressionPlugin({
             filename: '[path].gz[query]',
             test: /\.js$|\.css$|\.html$/,
