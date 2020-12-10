@@ -1,7 +1,7 @@
 {
-  "name": "leaflet-streetlights",
+  "name": "tree",
   "version": "0.1.0",
-  "description": "Boilerplate for leaflet maps",
+  "description": "tree map",
   "private": true,
   "main": "index.js",
   "dependencies": {
@@ -9,10 +9,12 @@
     "cross-fetch": "^3.0.6",
     "leaflet": "1.6.0",
     "leaflet-fullscreen": "1.0.2",
-    "mapbox-gl": "^1.6.1",
+    "leaflet-search": "^2.9.8",
+    "leaflet.locatecontrol": "^0.72.0",
+    "mapbox-gl": "^1.11.0",
     "mapbox-gl-leaflet": "0.0.11",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --open",

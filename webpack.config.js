@@ -20,8 +20,11 @@ let config = {
                 use: ['style-loader', 'css-loader'],
                 include: [
                     path.resolve(__dirname, 'node_modules/leaflet-fullscreen/dist'),
+                    path.resolve(__dirname, 'node_modules/leaflet-search/dist'),
                     path.resolve(__dirname, 'node_modules/leaflet/dist'),
-                    path.resolve(__dirname, 'node_modules/mapbox-gl/dist')
+                    path.resolve(__dirname, 'node_modules/mapbox-gl/dist'),
+                    path.resolve(__dirname, 'node_modules/font-awesome/css'),
+                    path.resolve(__dirname, 'node_modules/leaflet.locatecontrol/dist')
                 ]
             },
             {
@@ -34,7 +37,15 @@ let config = {
                 }],
                 include: [
                     path.resolve(__dirname, 'node_modules/leaflet-fullscreen/dist'),
+                    path.resolve(__dirname, 'node_modules/leaflet-search/images'),
                     path.resolve(__dirname, 'node_modules/leaflet/dist/images')
+                ]
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|svg)$/i,
+                use: ['url-loader'],
+                include: [
+                    path.resolve(__dirname, 'node_modules/font-awesome/fonts')
                 ]
             }
         ]
